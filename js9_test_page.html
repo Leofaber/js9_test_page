@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- js9 -->
+  <link type="text/css" rel="stylesheet" href="js9/js9support.css">
+  <link type="text/css" rel="stylesheet" href="js9/js9.css">
+  <script type="text/javascript" src="js9/js9prefs.js"></script>
+  <script type="text/javascript" src="js9/js9support.min.js"></script>
+  <script type="text/javascript" src="js9/js9.min.js"></script>
+  <script type="text/javascript" src="js9/js9plugins.js"></script>
+
+  <script type="text/javascript" src="js9Utils/js9utils.js"></script>
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+</head>
+<body>
+  <div class="container">
+    <h1>JS9 TEST PAGE</h1>
+
+    <div class="container">
+      <h2> Regions </h2>
+      <div class="JS9Menubar"></div>
+      <div class="JS9"></div>
+      <div style="margin-top: 5px;">
+      <div class="JS9Colorbar"></div>
+
+      <div style="margin-top: 5px;" id="JS9UtilsScaleBox"></div>
+      <button class="btn btn-danger" onclick="stopScaleChangeTrigger()">Stop scale color switching</button>
+    </div>
+
+    <hr>
+
+    <div class="container">
+      <h3>Light Window</h3>
+        <button onclick="lightWindow('../analysis/pubresults/ASTRI/DRASTRI_EVT_O17/ctools-lc_LC-from-start/T430578838_430588998/T430578838_430588998_E0.631_350_P184.557449_-5.78436_cube.fits')" class='btn btn-success'>Fits1</button>
+        <button onclick="lightWindow('../analysis/pubresults/ASTRI/DRASTRI_EVT_O17/ctools-lc_LC-from-start/T430578838_430588978/T430578838_430588978_E0.631_350_P184.557449_-5.78436_cube.fits')" class='btn btn-success'>Fits2</button>
+    </div>
+  </div>
+  <script>
+
+    function lightWindow(path) {
+      loadNewJs9LightWindow(path);
+    }
+
+
+    $('document').ready(function(){
+
+
+       JS9.Preload('../../cat2_ring_fits/92.812500_-9.594069/FM3.119_ASDCe_H0025_B01.cts.gz',
+        {
+          onload: function(im){
+            JS9.DisplayCoordGrid(true);
+            JS9.ResizeDisplay(728, 728);
+            JS9.GaussBlurData(4)
+            JS9.SetZoom("toFit");
+
+
+            // regionFileName, format, wcssys, sourceL, sourceB, degreeDistanc
+            loadRegionCatalog("3FGL_gll_psc_v14_ell.reg", 1, "fk5", 92.4053, -10.3623, 10);
+            loadRegionCatalog("3FGL_gll_psc_v14.reg", 1, "fk5", 92.4053, -10.3623, 10);
+            loadRegionCatalog("2agl_cat_4_7_18.reg", 0, "galactic", 92.4053, -10.3623, 15);
+
+            scaleChangeIntervalTrigger(null);
+          }
+        });
+      });
+    </script>
+
+  </body>
+  </html>
+
+
+
+
+<!--
+
+            //  JS9.AddRegions('galactic;circle(92.4053d, -10.3623d,'+distance+'d) #color=red dash=1 width=1');
+            //  JS9.AddRegions('fk5;circle(330d, 43d,'+distance+'d) #color=white dash=1 width=1');
+
+/*
+              extractRegionsForJS9Map('../../analysis/catalogs/2agl_cat_4_7_18.reg',false,"galactic","ellipse", 92.4053, -10.3623, distance, function(regions){
+                regions.forEach(function(regionString) {
+                  JS9.AddRegions(regionString);
+                  console.log(regionString);
+                });
+              });
+*/
+
+/*
+
+              console.log("parsing");
+              var t0 = performance.now();
+
+              extractRegionsForJS9Map('../../analysis/catalogs/3FGL_gll_psc_v14_ell.reg',true,"fk5","ellipse", 330, 43, distance, function(regions){
+                var t1 = performance.now();
+
+
+                console.log("Call to parsing() took " + (t1 - t0) + " milliseconds.")
+
+                console.log("Display regions")
+                t0 = performance.now();
+
+
+                JS9.LoadRegions('js_labels_test2.reg', { onload: function(){
+                  console.log("regioni caricate!");
+                }});
+
+
+                JS9.AddRegions(regions);
+
+
+
+                regions.forEach(function(regionString) {
+                  JS9.AddRegions(regionString);
+                  $( ".regions" ).append( regionString+"<br>" );
+//                  console.log(regionString);
+});
+
+
+                t1 = performance.now();
+                console.log("Call to DisplayRegions() took " + (t1 - t0) + " milliseconds.")
+
+              });
+
+              console.log("Fuori dal caricamento!!");
+
+
+
+              /*console.log("e' asincrona")
+              extractRegionsForJS9Map('../../analysis/catalogs/3FGL_gll_psc_v14.reg',true,"fk5","point", 330, 43, distance, function(regions){
+                regions.forEach(function(regionString) {
+                  JS9.AddRegions(regionString);
+                  console.log(regionString);
+
+                });
+              });*/
+
+
+              //JS9.LoadRegions('../../analysis/catalogs/2agl_cat_4_7_18.reg');
+            //  JS9.LoadRegions('../../analysis/catalogs/3FGL_gll_psc_v14_ell.reg');
+-->
